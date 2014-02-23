@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ez-park-meter</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="ez_park">EZ\nPARK</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="date">Date</string>
+    <string name="expiration_time">Expiration Time</string>
+    <string name="feePaid">Fee Paid    $2.00</string>
+    <string name="purchase_time">Purchase Time:</string>
+    <string name="machine">MACHINE:</string>
+
+</resources>

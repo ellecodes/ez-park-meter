@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:src="@drawable/ppa_logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:scaleType="center"
+        android:background="#FFFFFF"
+        android:contentDescription="@string/app_name" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#FFFFFF"
+        android:paddingTop="5dp" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/date"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/expiration_time"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#FFFFFF" >
+
+        <TextView
+            android:id="@+id/dateTxtView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/dummy_button"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/expTimeTxtView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/dummy_button"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+        
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/feePaidTxtView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:text="@string/feePaid"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFBB33"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#FFFFFF" >
+        
+       	<TextView
+       	    android:id="@+id/textView4"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:text="@string/machine"
+       	    android:textAppearance="?android:attr/textAppearanceMedium"
+       	    android:textColor="#000000"
+       	    android:textStyle="bold" />
+      
+       	<TextView
+       	    android:id="@+id/machineTxtView"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:paddingLeft="10dp"
+       	    android:text="@string/dummy_button"
+       	    android:textAppearance="?android:attr/textAppearanceMedium"
+       	    android:textColor="#000000"
+       	    android:textStyle="bold" />
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/purchase_time"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/purchaseTimeTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dummy_button"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:textColor="#000000"
+            android:paddingLeft="10dp"/>
+        
+    </LinearLayout>
+
+</LinearLayout>
