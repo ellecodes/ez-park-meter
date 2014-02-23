@@ -23,6 +23,7 @@ public class SendData extends AsyncTask<Integer, Void, JSONObject> {
 	
     private static final String MACHINE_ID = "12F002";
     private static final String URL = "http://ez-park.herokuapp.com/requests.json";
+    private static final double RATE = 0.25;
 	
 	private ProgressDialog dialog;
 	
@@ -31,6 +32,7 @@ public class SendData extends AsyncTask<Integer, Void, JSONObject> {
 	SimpleDateFormat formatterhhmma = new SimpleDateFormat("hh:mma", Locale.US);
 	
 	double expireTime;
+	double feePaid;
 	private Activity context;
 	
 	public SendData(Activity context) {
@@ -39,7 +41,7 @@ public class SendData extends AsyncTask<Integer, Void, JSONObject> {
 
 	@Override
 	protected void onPreExecute() {
-		dialog = ProgressDialog.show(context, "", "Please wait. Processing...");
+		dialog = ProgressDialog.show(context, "", "Processing...");
 		dialog.setCancelable(false);
 	}
 	@Override
@@ -52,6 +54,9 @@ public class SendData extends AsyncTask<Integer, Void, JSONObject> {
 		
 		// Compute expire time in mili seconds used in the response dialog
 		expireTime = date.getTime() + duration[0]*60*1000; 
+		
+		// Compute fee needed to pay
+		feePaid = duration[0]*RATE/15;
 		
 		result = mc.post(null, null, url);
 		
@@ -118,6 +123,10 @@ public class SendData extends AsyncTask<Integer, Void, JSONObject> {
 		}
 		purchaseTimeTxtView.setText(formatterhhmma.format(date.getTime()));
 		machineTxtView.setText(MACHINE_ID);
+		
+		// Update feePaid TextView
+		TextView feePaidTxtView = (TextView) view.findViewById(R.id.feePaidTxtView);
+		feePaidTxtView.setText(String.format("FEE PAID  $%.2f", feePaid));
 		
 		responseDialog.show();
 	}
