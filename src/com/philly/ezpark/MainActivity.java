@@ -1,14 +1,27 @@
 package com.philly.ezpark;
 
+import java.util.Arrays;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.NfcF;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.philly.ezpark.util.SystemUiHider;
 
@@ -46,7 +59,12 @@ public class MainActivity extends Activity {
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
-
+    
+	private NfcAdapter mNfcAdapter;
+	private PendingIntent mPendingIntent;
+	private IntentFilter[] mIntentFilters;
+	private String[][] mNFCTechLists;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +112,24 @@ public class MainActivity extends Activity {
         		new SendData(MainActivity.this).execute(Integer.valueOf(duration));        	
             }
         });
+        
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        
+		// create an intent with tag data and deliver to this activity
+		mPendingIntent = PendingIntent.getActivity(this, 0,
+				new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+		
+		// set an intent filter for all MIME data
+		IntentFilter ndefIntent = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+		try {
+			ndefIntent.addDataType("*/*");
+			mIntentFilters = new IntentFilter[] { ndefIntent };
+		} catch (Exception e) {
+			Log.e("TagDispatch", e.toString());
+		}
+
+		mNFCTechLists = new String[][] { new String[] { NfcF.class.getName() } };
+		
         
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
@@ -197,4 +233,36 @@ public class MainActivity extends Activity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+    
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+		String action = intent.getAction();
+		Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+		String s = action + "\n\n" + tag.toString();
+
+		// parse through all NDEF messages and their records and pick text type only
+		Parcelable[] data = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+		
+		// TODO Get data from beam and show in the dialog
+		
+		new SendData(MainActivity.this).execute(Integer.valueOf(60));
+    }
+    
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (mNfcAdapter != null)        
+			mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mIntentFilters, mNFCTechLists);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		if (mNfcAdapter != null)
+			mNfcAdapter.disableForegroundDispatch(this);
+	}
  }

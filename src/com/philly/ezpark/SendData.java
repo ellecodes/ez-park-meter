@@ -39,7 +39,7 @@ public class SendData extends AsyncTask<Integer, Void, JSONObject> {
 
 	@Override
 	protected void onPreExecute() {
-		dialog = ProgressDialog.show(context, "", "Sending data...");
+		dialog = ProgressDialog.show(context, "", "Please wait. Processing...");
 		dialog.setCancelable(false);
 	}
 	@Override
