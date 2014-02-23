@@ -1,20 +1,26 @@
 package com.philly.ezpark;
 
+import java.util.Arrays;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcF;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.philly.ezpark.util.SystemUiHider;
 
@@ -230,14 +236,34 @@ public class MainActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent)
     {
-		/*String action = intent.getAction();
-		Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-		
+    	String[] beamData = new String[10];
+    	
 		// parse through all NDEF messages and their records and pick text type only
 		Parcelable[] data = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-		*/
 		
-    	// TODO Get data from beam and show in the dialog
+        if (data != null) {
+            try {
+                for (int i = 0; i < data.length; i++) {
+                    NdefRecord [] recs = ((NdefMessage)data[i]).getRecords();
+                    for (int j = 0; j < recs.length; j++) {
+                        if (recs[j].getTnf() == NdefRecord.TNF_WELL_KNOWN &&
+                            Arrays.equals(recs[j].getType(), NdefRecord.RTD_TEXT)) {
+                            byte[] payload = recs[j].getPayload();
+                            String textEncoding = ((payload[0] & 0200) == 0) ? "UTF-8" : "UTF-16";
+                            int langCodeLen = payload[0] & 0077;
+ 
+                            beamData[j] = new String(payload, langCodeLen + 1, payload.length - langCodeLen - 1, textEncoding);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("BeamDataError; ", e.toString());
+            }
+        }
+        
+        for (int j = 0; j < 2; j++) {
+        	Toast.makeText(getApplicationContext(), beamData[j], Toast.LENGTH_SHORT).show();
+        }
 		
 		new SendData(MainActivity.this).execute(Integer.valueOf(60));
     }
